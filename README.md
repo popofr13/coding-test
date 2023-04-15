@@ -21,9 +21,37 @@ Pour lancer la commande :
 $ php index.php custhome:update:lots data/update.json
 ```
 
+Pour lancer les tests :
+```console
+$ ./vendor/bin/phpunit tests/
+```
+
 ## Setup
 #
 [Installer les dépendances avec composer](https://getcomposer.org/)
 ```console
 $ composer install
+```
+
+## Work with Localstack/S3
+
+Launch docker container
+```console
+$ docker-compose up -d
+```
+
+Install pip/awslocal (https://github.com/localstack/awscli-local).
+
+Create bucket and copy `update.json` file.
+```console
+$ awslocal s3 mb s3://custhome
+$ awslocal s3 cp data/update.json s3://custhome/data/update.json
+```
+
+Uncomment/comment lines on `index.php`.
+
+Useful commands
+```console
+$  awslocal s3api list-buckets # List buckets
+$  awslocal s3api list-objects --bucket custhome # List objects
 ```

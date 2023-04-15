@@ -7,17 +7,12 @@ use RuntimeException;
 class LotRepository
 {
     /**
-     * @var Lot[]
+     * @var $lots array|Lot[]
      */
-    private array $lots = [];
-
-    public function __construct()
+    public function __construct(
+        private array $lots = []
+    )
     {
-        $this->lots[] = new Lot('A', true);
-        $this->lots[] = new Lot('B', false);
-        $this->lots[] = new Lot('C', true);
-        $this->lots[] = new Lot('D', true);
-        $this->lots[] = new Lot('E', false);
     }
 
     /**
