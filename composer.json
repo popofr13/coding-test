@@ -1,0 +1,13 @@
+{
+    "name": "custhome/test",
+    "require": {
+        "symfony/console": "^5.4",
+        "ext-json": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "UI\\": "src/UI/",
+            "Domain\\": "src/Domain/"
+        }
+    }
+}
