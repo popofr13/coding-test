@@ -21,6 +21,11 @@ Pour lancer la commande :
 $ php index.php custhome:update:lots data/update.json
 ```
 
+Pour lancer les tests :
+```console
+$ ./vendor/bin/phpunit tests/
+```
+
 ## Setup
 #
 [Installer les dépendances avec composer](https://getcomposer.org/)
