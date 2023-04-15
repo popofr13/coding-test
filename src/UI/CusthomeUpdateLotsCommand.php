@@ -4,6 +4,7 @@ namespace UI;
 
 use Domain\Lot;
 use Domain\LotRepository;
+use League\Flysystem\Filesystem;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -14,7 +15,8 @@ class CusthomeUpdateLotsCommand extends Command
     protected static $defaultName = 'custhome:update:lots';
 
     public function __construct(
-        private readonly LotRepository $lotRepository
+        private readonly LotRepository $lotRepository,
+        private readonly Filesystem $filesystem
     )
     {
         parent::__construct();
@@ -33,7 +35,9 @@ class CusthomeUpdateLotsCommand extends Command
     {
         $path = $input->getArgument('path');
 
-        $importedLots = json_decode(file_get_contents($path), true);
+        $fileContent = $this->filesystem->read($path);
+
+        $importedLots = json_decode($fileContent, true);
 
         foreach ($importedLots as $importedLot) {
             $lot = $this->lotRepository->getLotByKey($importedLot['key']);
