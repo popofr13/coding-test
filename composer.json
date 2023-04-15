@@ -5,10 +5,18 @@
         "ext-json": "*",
         "php": "^8.2"
     },
+    "require-dev": {
+        "phpunit/phpunit": "^10.1"
+    },
     "autoload": {
         "psr-4": {
             "UI\\": "src/UI/",
             "Domain\\": "src/Domain/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
         }
     }
 }
