@@ -13,17 +13,10 @@ class CusthomeUpdateLotsCommand extends Command
 {
     protected static $defaultName = 'custhome:update:lots';
 
-    /**
-     * @var LotRepository
-     */
-    private $lotRepository;
-
-    /**
-     * @param LotRepository $lotRepository
-     */
-    public function __construct(LotRepository $lotRepository)
+    public function __construct(
+        private readonly LotRepository $lotRepository
+    )
     {
-        $this->lotRepository = $lotRepository;
         parent::__construct();
     }
 
@@ -40,9 +33,30 @@ class CusthomeUpdateLotsCommand extends Command
     {
         $path = $input->getArgument('path');
 
-        /**
-         * You code here
-         */
+        $importedLots = json_decode(file_get_contents($path), true);
+
+        foreach ($importedLots as $importedLot) {
+            $lot = $this->lotRepository->getLotByKey($importedLot['key']);
+            if (null === $lot) {
+                $lot = new Lot($importedLot['key']);
+
+                $this->lotRepository->registerLot($lot);
+
+                continue;
+            }
+
+            if (false === $lot->isAvailable()) {
+                $lot->enable();
+            }
+        }
+
+        // Disable all lots that are not in the remote stream
+        $importedLotKeys = array_column($importedLots, 'key');
+        foreach ($this->lotRepository->getLots() as $lot) {
+            if(false === in_array($lot->getKey(), $importedLotKeys)) {
+                $lot->disable();
+            }
+        }
 
         if ($this->checkResult($this->lotRepository->getLots()))
         {

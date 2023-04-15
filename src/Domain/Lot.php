@@ -4,24 +4,11 @@ namespace Domain;
 
 class Lot
 {
-    /**
-     * @var string
-     */
-    private $key;
-
-    /**
-     * @var bool
-     */
-    private $available;
-
-    /**
-     * @param string $key
-     * @param bool $available
-     */
-    public function __construct(string $key, bool $available)
+    public function __construct(
+        private readonly string $key,
+        private bool $available = true
+    )
     {
-        $this->key = $key;
-        $this->available = $available;
     }
 
     public function enable(): self {

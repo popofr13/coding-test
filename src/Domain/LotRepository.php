@@ -2,12 +2,14 @@
 
 namespace Domain;
 
+use RuntimeException;
+
 class LotRepository
 {
     /**
      * @var Lot[]
      */
-    private $lots = [];
+    private array $lots = [];
 
     public function __construct()
     {
@@ -26,23 +28,32 @@ class LotRepository
         return $this->lots;
     }
 
-    /**
-     * @param string $key
-     * @return Lot
-     * @Throw \RuntimeException
-     */
-    public function getLotByKey(string $key): Lot
+    public function getLotByKey(string $key): ?Lot
     {
-        /**
-         * You code here
-         */
+        $lots = array_filter($this->lots, function (Lot $lot) use ($key) {
+            return $lot->getKey() === $key;
+        });
+
+        if (0 === count($lots)) {
+            return null;
+        }
+
+        return current($lots);
     }
 
-    public function registerLot(Lot $lot)
+    /**
+     * @param Lot $lot
+     * @return void
+     * @throws RuntimeException
+     */
+    public function registerLot(Lot $lot): void
     {
-        /**
-         * You code here
-         */
+        $existingLot = $this->getLotByKey($lot->getKey());
+        if (null !== $existingLot) {
+            throw new RuntimeException('Lot already exists');
+        }
+
+        $this->lots[] = $lot;
     }
 
 }

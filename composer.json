@@ -1,8 +1,9 @@
 {
     "name": "custhome/test",
     "require": {
-        "symfony/console": "^5.4",
-        "ext-json": "*"
+        "symfony/console": "^6.2",
+        "ext-json": "*",
+        "php": "^8.2"
     },
     "autoload": {
         "psr-4": {
